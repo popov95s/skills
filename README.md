@@ -80,6 +80,7 @@ ln -sfn ~/Documents/repos/personal/skills/lean-code ~/.claude/skills/lean-code
 | --- | --- |
 | `lean-code/SKILL.md` | The rules, for every language |
 | `lean-code/<language>/guide.md` | How the rules look in that language |
+| `lean-code/typescript/react.md` | React rules, read when editing components or hooks |
 | `lean-code/<language>/patterns.md` | Which pattern fits which problem, with code |
 | `lean-code/smells.md` | Smells to check when reviewing a diff |
 | `lean-code/bug-fixes.md` | Steps for a bug fix |
@@ -99,6 +100,10 @@ lean-code adapts rules from these, rewritten to fit together:
 - [typescript-advanced-types](https://github.com/wshobson/agents/tree/main/plugins/javascript-typescript/skills/typescript-advanced-types)
   skill: narrowing instead of casts, deriving types from their source, `readonly` inputs,
   type-level tests, `interface` for object shapes, helper types that tie caller input to a real type.
+- [vercel-composition-patterns](https://github.com/vercel-labs/agent-skills/tree/main/skills/composition-patterns)
+  skill: compound components, a provider as the only place that knows the state source,
+  lifting state instead of syncing it, children over render props, React 19 APIs
+  (`typescript/react.md`).
 - [Refactoring.Guru smell catalogue](https://refactoring.guru/refactoring/smells): the
   smell table in `smells.md`.
 - [React: You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect):

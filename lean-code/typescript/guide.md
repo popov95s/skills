@@ -135,34 +135,7 @@ const loadOptionalUser = async (id: UserId | undefined) => {
 
 ## React
 
-- One component per file. Components render, hooks own data, services own rules.
-- Split components by presentation, interaction, rule or state lifetime, not into arbitrary
-  slices of markup.
-- A component that returns one element with fixed sizes, spacing or colours is a hollow
-  wrapper. Keep it inline or use the design-system primitive.
-- A hook owns one stateful interaction. It is not a place to park every helper.
-- `{condition && <Element />}` is fine for showing or hiding one element. No ternary that
-  picks between two pieces of markup, and no `&&` chains doing the same. Give the choice its
-  own component with early returns:
-
-  ```tsx
-  const Results = ({ state }: { state: ResultsState }) => {
-    if (state.kind === "loading") return <Spinner />;
-    return <ResultList items={state.items} />;
-  };
-  ```
-
-- Mode props become separate variant components, or composition with `children` or named
-  slots. `disabled`, `loading` and `selected` props state a fact and are fine.
-- One owner per piece of state. Don't copy props into state or sync copies with effects.
-  Refs are fine for DOM access, timers and request identity.
-- Never reset state with an effect that sets values back. Let it start fresh instead:
-  - A dialog's form lives in its own component that renders only while the dialog is
-    open (`{open && <RenameForm />}`, or dialog content that unmounts when closed). Every
-    open starts from the initial values.
-  - A component that stays mounted while its subject changes gets `key={subject.id}`.
-- A context needs several consumers that really share state, not one prop to avoid passing.
-- Use the APIs of the installed React version; don't assume newer ones.
+Editing a component or hook: read [react.md](react.md).
 
 ## Files
 

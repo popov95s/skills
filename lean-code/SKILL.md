@@ -10,7 +10,7 @@ show how to write them:
 
 | Language | Guide (read before the first edit) | Patterns (read when picking a structure) |
 | --- | --- | --- |
-| TypeScript and JavaScript | [typescript/guide.md](typescript/guide.md) | [typescript/patterns.md](typescript/patterns.md) |
+| TypeScript and JavaScript | [typescript/guide.md](typescript/guide.md), plus [typescript/react.md](typescript/react.md) for components and hooks | [typescript/patterns.md](typescript/patterns.md) |
 | Python | [python/guide.md](python/guide.md) | [python/patterns.md](python/patterns.md) |
 | Swift and SwiftUI | [swift/guide.md](swift/guide.md) | [swift/patterns.md](swift/patterns.md) |
 | Rust | [rust/guide.md](rust/guide.md) | [rust/patterns.md](rust/patterns.md) |

@@ -1,7 +1,7 @@
 # Patterns: TypeScript and JavaScript
 
 Which pattern fits which problem, in TypeScript. The rules behind them are in
-[SKILL.md](../SKILL.md); the Python version is [python/patterns.md](../python/patterns.md).
+[SKILL.md](../SKILL.md); React patterns are in [react.md](react.md); the Python version is [python/patterns.md](../python/patterns.md).
 
 | Problem | Pattern | Simpler form that may be enough |
 | --- | --- | --- |
@@ -13,7 +13,7 @@ Which pattern fits which problem, in TypeScript. The rules behind them are in
 | Callers repeat the same setup and call order across a subsystem | [Facade](#facade) | One named operation in the existing owner |
 | Work is a fixed order of transformations | [Pipeline](#pipeline) | Plain calls in one function, which is often the whole pipeline |
 | An implementation must be chosen and built from real services | [Picker](#picker) | No picker when the caller already knows the kind |
-| A component's mode props pick different layouts or actions | [UI composition](#ui-composition) | A `disabled` or `loading` prop, when it only states a fact |
+| A component's mode props pick different layouts or actions | [Variant components](react.md#variant-components) | A `disabled` or `loading` prop, when it only states a fact |
 
 Several patterns can sit at different levels of one feature. Don't stack two on the same
 decision.
@@ -268,33 +268,3 @@ returned by its case, with no factory file.
 
 **Not this:** a container that hands out any dependency by name, a string registry, or a
 module-level record of built strategies.
-
-## UI composition
-
-**Use when** mode props make one component choose between layouts, actions or state.
-
-```tsx
-// Not this
-<ProfileCard mode="edit" showActions />
-
-// This: one component per variant, composed from shared parts
-<EditableProfileCard profile={profile} onSave={saveProfile} />
-<ReadOnlyProfileCard profile={profile} />
-
-// Each variant composes the same pieces
-export const EditableProfileCard = ({ profile, onSave }: EditableProfileCardProps) => {
-  const draft = useProfileDraft(profile);
-  return (
-    <Card>
-      <ProfileFields value={draft.value} onChange={draft.update} />
-      <SaveActions status={draft.status} onSave={() => onSave(draft.value)} />
-    </Card>
-  );
-};
-```
-
-Use `children` or named slots when callers only supply content. One component owns the
-draft; children get a value and an action. A choice of markup is a component with early
-returns, never a ternary in the markup.
-
-**Simpler:** `disabled`, `loading` and `selected` are facts, not modes, and stay props.
