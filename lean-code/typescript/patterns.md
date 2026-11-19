@@ -25,7 +25,7 @@ rule. Use it from two kinds on.
 
 ```ts
 // quoter.ts
-export type Quoter = { quote: () => Promise<Money> };
+export interface Quoter { quote: () => Promise<Money> }
 
 // courierQuoter.ts
 export const courierQuoter = (
@@ -74,7 +74,7 @@ to compile. Inside `case "locker"`, `shipment` is already the locker variant.
 
 ```ts
 // delivery.ts
-export type Delivery = { quote: () => Promise<Money>; track: () => Promise<Tracking> };
+export interface Delivery { quote: () => Promise<Money>; track: () => Promise<Tracking> }
 
 // deliveryFor.ts
 export const deliveryFor = (shipment: Shipment): Delivery => {
@@ -130,7 +130,7 @@ const destinationLabel = (destination: Destination): string => {
 **Not this:**
 
 ```ts
-type Destination = { kind: "email" | "sms"; address?: string; phoneNumber?: string };
+interface Destination { kind: "email" | "sms"; address?: string; phoneNumber?: string }
 ```
 
 **Simpler:** a boolean for a real yes/no fact; an optional field that is optional for every
@@ -209,7 +209,7 @@ operation you need; the adapter translates to and from the vendor.
 ```ts
 // messageSender.ts
 export type SendResult = { kind: "sent"; receiptId: string } | { kind: "rejected"; reason: string };
-export type MessageSender = { send: (message: Message) => Promise<SendResult> };
+export interface MessageSender { send: (message: Message) => Promise<SendResult> }
 
 // vendorMessageSender.ts
 export const vendorMessageSender = (client: VendorClient): MessageSender => ({

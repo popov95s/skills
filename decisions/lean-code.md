@@ -16,4 +16,7 @@
 | 2026-11-19 | No diff-search commands in the guides | Pattern checks belong to separate tools; the skill states rules |
 | 2026-11-19 | Concrete readability limits: two conditions per expression, two levels of nesting, assign once | "No dense expressions" was too vague and was the most repeated review ask |
 | 2026-11-19 | No reads in a loop | N+1 reads were a repeated review ask with no rule |
+| 2026-11-19 | From typescript-advanced-types: narrowing instead of casts, derived types, `readonly` inputs, type-level tests; not its tutorial on generic, conditional and mapped types | The rules fill gaps in the TypeScript guide; the tutorial adds type puzzles |
+| 2026-11-19 | `interface` for object shapes and `extends` over `&`, as typescript-advanced-types says | Conflicting fields fail at the declaration, errors show the name, and extended interfaces check faster |
+| 2026-11-19 | Helper types allowed when they tie caller input to a real type; type-level checks are not asserts; no assertion functions | Typed paths and frozen config catch real mistakes; assertion functions are runtime asserts |
 | 2026-11-19 | Expected reuse is not speculative; generic code lives in the shared module; domain values live on their owner | Shared-component and placement asks repeated because "no speculative generality" pulled the other way |

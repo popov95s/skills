@@ -96,6 +96,9 @@ lean-code adapts rules from these, rewritten to fit together:
   testing through the public interface, testing a dependency by its kind.
 - [karpathy-guidelines](https://github.com/forrestchang/andrej-karpathy-skills): no error
   handling for impossible cases, clean up only your own leftovers, a failing test first.
+- [typescript-advanced-types](https://github.com/wshobson/agents/tree/main/plugins/javascript-typescript/skills/typescript-advanced-types)
+  skill: narrowing instead of casts, deriving types from their source, `readonly` inputs,
+  type-level tests, `interface` for object shapes, helper types that tie caller input to a real type.
 - [Refactoring.Guru smell catalogue](https://refactoring.guru/refactoring/smells): the
   smell table in `smells.md`.
 - [React: You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect):

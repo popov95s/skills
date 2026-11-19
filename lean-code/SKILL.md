@@ -60,7 +60,8 @@ conflict.
 - **Never simplify away** validation at trust boundaries, error handling that prevents data
   loss, security checks or accessibility basics.
 - **Tests live in test files.** No `demo()` functions or assert-based self-checks in
-  source files.
+  source files. Type-level checks that fail to compile are types, not assertions, and are
+  fine.
 
 ## Files
 

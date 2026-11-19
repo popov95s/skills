@@ -5,6 +5,8 @@ notes for plain JavaScript at the end.
 
 ## Types
 
+- Object shapes are `interface`; unions, function types and computed types are `type`.
+  Extend an object shape with `interface B extends A`, not `A & {...}`.
 - Kinds are string-literal unions: `type Format = "pdf" | "docx"`.
 - Variants are discriminated unions: `{ kind: "ok"; value: T } | { kind: "notFound" }`.
 - A record of values per kind uses `satisfies Record<Kind, Value>`, so a missing kind fails to
@@ -16,6 +18,13 @@ notes for plain JavaScript at the end.
   error class for this or a one-line class in the domain's errors file. No hand-rolled
   `assertNever` helper.
 - No `as` casts (`as const` is fine), no non-null `!`, no `any`.
+- Replace a cast with narrowing: a discriminant check, `in`, or a schema parse. A type guard
+  (`(x): x is Foo`) only wraps a real runtime check; a guard that checks nothing is a cast.
+  No assertion functions (`asserts x is Foo`).
+- Derive a type from its source instead of retyping its fields: `typeof`, `ReturnType`,
+  `Pick`, `Omit`, or the schema's inferred type.
+- Arrays and records a function takes and doesn't change are `readonly`
+  (`readonly Item[]`, `Readonly<Record<Kind, Label>>`).
 - No `@ts-ignore`, `@ts-expect-error` or `*-disable` lint comments.
 - Untrusted input is parsed with the project's schema library at the boundary; inside,
   trust the type.
@@ -28,10 +37,17 @@ notes for plain JavaScript at the end.
 ## Keep types useful
 
 - Plain types, discriminated unions, inference and `satisfies` over clever generics.
-- Mapped or conditional types only when they state a link callers rely on (a schema and its inferred type). Don't turn a plain runtime decision into a type puzzle.
+- A helper type (mapped, conditional, template literal) is fine when it ties caller input
+  to a real type: `Path<Config>` for dotted keys, `DeepReadonly<Settings>` for frozen
+  config, keys of `Row` whose values are numbers. It is not fine when it mirrors a runtime
+  choice (`K extends "pdf" ? PdfHandler : ...`): that is a strategy. Each helper type gets a
+  type-level test.
 - Reuse the project's id types and schemas. Don't start a parallel branded-type set.
 - Narrow `unknown` input explicitly. A type annotation doesn't validate network or storage
   data.
+- Test a type that callers rely on with type-level checks: the test framework's
+  `expectTypeOf`, or an `Equal<A, B>` check that fails to compile. These are types, not
+  assertions, and the no-assert rules don't apply to them.
 
 ## Errors and modules
 
