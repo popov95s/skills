@@ -4,7 +4,7 @@ Personal agent skills. Each folder is one skill with a `SKILL.md` at its root.
 
 | Skill | What it does |
 | --- | --- |
-| [lean-code](lean-code/SKILL.md) | How code is written in TypeScript, JavaScript and Python |
+| [lean-code](lean-code/SKILL.md) | How code is written in TypeScript, JavaScript, Python and Swift |
 
 ## Install
 
