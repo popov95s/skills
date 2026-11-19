@@ -5,6 +5,7 @@ Personal agent skills. Each folder is one skill with a `SKILL.md` at its root.
 | Skill | What it does |
 | --- | --- |
 | [lean-code](lean-code/SKILL.md) | How code is written in TypeScript, JavaScript, Python, Swift and Rust |
+| [terse](terse/SKILL.md) | How replies are written: only the key points, hard length caps, tables for data |
 
 ## Install
 
@@ -15,7 +16,7 @@ so the CLI uses your existing Git, GitHub CLI or SSH login.
 For every project (user-wide):
 
 ```bash
-bunx skills add popov95s/skills --skill lean-code -g
+bunx skills add popov95s/skills --skill lean-code --skill terse -g
 ```
 
 For one project only, run it from the project root without `-g`:
@@ -51,7 +52,7 @@ bunx skills remove lean-code
 
 ## Setup
 
-lean-code has no trigger: it should apply to every edit. Agents load a skill only when its
+lean-code and terse have no trigger: they should apply to every edit and every reply. Agents load a skill only when its
 description matches the task, so add this to your agent's global instructions
 (`~/.claude/CLAUDE.md` for Claude Code, `~/.codex/AGENTS.md` for Codex):
 
@@ -59,6 +60,9 @@ description matches the task, so add this to your agent's global instructions
 Every file you write or edit follows the lean-code skill. Read its SKILL.md once per
 session before your first edit, plus the guide for the language you edit
 (typescript/, python/, swift/ or rust/). Repo instructions win where they conflict.
+
+Every reply to me follows the terse skill. Read its SKILL.md once per session before your
+first answer.
 ```
 
 ## Working on the skills
@@ -72,6 +76,7 @@ git clone git@github.com:popov95s/skills.git ~/Documents/repos/personal/skills
 
 ```bash
 ln -sfn ~/Documents/repos/personal/skills/lean-code ~/.claude/skills/lean-code
+ln -sfn ~/Documents/repos/personal/skills/terse ~/.claude/skills/terse
 ```
 
 ## Layout
