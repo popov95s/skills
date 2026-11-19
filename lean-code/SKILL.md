@@ -38,14 +38,18 @@ conflict.
   decisions and writes, and keeps writes that must be atomic in one transaction.
 - **No reads in a loop.** One query or request per item of a list is an N+1. Read in bulk
   (by ids, by one index range, one batch call) before the loop, then look items up in memory.
-  The same holds for a list in the UI that fetches once per row.
+  The same holds for a list in the UI that fetches once per row. Read each fact once per
+  flow: pass the loaded value down instead of fetching it again. Every list a function
+  reads or returns has a bound: paginate or cap it.
 - **One owner per fact.** Each piece of state and each transition has one owner. Children
   get a value and an action, never a synchronized copy.
 - **Separate models for different meanings.** A shipping address and an invoice address
   stay separate types even when their fields match today.
 - **One owner per decision.** Two copies of the same decision get one owner. Code that only
   looks alike but encodes different policies stays separate.
-- **Clean code.** Intention-revealing names. Small functions at one level of abstraction.
+- **Clean code.** Names say what the thing is: no `data`, `result` or `temp`, no
+  abbreviations, the unit in the name (`timeoutMs`), a boolean that reads as a question
+  (`isOverdue`). Small functions at one level of abstraction.
   No hidden side effects in getters or `is`/`has` functions. No dead code.
 - **No special cases for one caller.** Standardize so every caller reads the same thing.
 - **Testable through the public interface.** Accept dependencies instead of creating them;
@@ -78,7 +82,9 @@ conflict.
   `utils`/`helpers` file is fine at 3–4 functions, next to the domain it serves.
 - **Generic code lives in the shared module.** A helper or component with nothing
   feature-specific in it goes where every feature can find it, not inside the first feature
-  that needed it. Provider-specific details stay in that provider's module.
+  that needed it. Provider-specific details stay in that provider's module. Shared code
+  uses only generic terms: no market, provider, locale or page names. The caller passes a
+  value or a strategy.
 - **Under 400 lines.** When a file grows past that, split it. Don't reorganize it into
   sections with comment headers.
 - **Index and package files only re-export.** No types, constants, functions, side effects
@@ -101,7 +107,8 @@ conflict.
   pure calls: no side effects, no `await`, no nesting, no markup. Anything else becomes a
   named function with early returns.
 - **Readable in one pass.** A reader follows a function top to bottom without going back.
-  Readable steps beat one line. Use `map`/`filter` over a reduce that builds an object.
+  Readable steps beat one line. Use `map`/`filter` over a reduce that builds an object. A loop that only pushes or sets
+  becomes `map`/`filter`.
 - **At most two conditions in one expression.** A third `&&`/`||` gets a named predicate
   (`isOverdue(invoice)`) or a derived union. Never mix `&&` and `||` without naming the parts.
 - **At most two levels of nesting.** Deeper code becomes guard clauses or a named function.
@@ -118,7 +125,8 @@ conflict.
   a case out, don't check it again. Exhaustiveness checks are not error handling: keep
   them.
 - **Errors are specific.** One typed error per failure mode, and each mode is handled by
-  its type. No generic "failed".
+  its type. No generic "failed". No silent fallback where the data must exist (`?? ""`,
+  `catch { return [] }`): throw the typed error.
 - **Derive state, don't patch it.** No latches, no reassigned internal values. Reset a form
   or dialog by recreating it, not by setting its values back one by one.
 
@@ -159,8 +167,10 @@ shapes) drifts into the same seven smells.
    with a round-trip property test). Detection by name happens in that codec only.
 6. **One copy, one path.** Spot: a helper re-exported from a second module, a second copy of
    a small utility, the same constant in several files, a second sort order or search that
-   must agree with the first, a table translating between two equivalent code sets. Fix:
-   one owner, imported directly; return the final value instead of mapping it afterwards.
+   must agree with the first, a table translating between two equivalent code sets, blocks
+   that differ only in a value, a wrapper or setup step that every method repeats. Fix: one
+   owner, imported directly; return the final value instead of mapping it afterwards; one
+   mechanism that takes the value; the repeated step applied once at the shared entry.
 7. **No API kept alive by tests.** Spot: an export, option or parameter that only a test
    calls. Fix: delete it, or add it with its first real caller.
 
@@ -179,6 +189,7 @@ All rules for `if`, `switch`, `match` and ternaries are here. Decide by what the
 | Picks behaviour by kind, and any case calls a service, does IO or holds rules | A **strategy chosen by one picker function**, even with two kinds in one place |
 | Picks behaviour by one kind inside another (access kind × resource kind) | Methods on the strategy, one per kind of the other dimension |
 | Combines several flags to pick a path | Derive one **named union** once, then the rows above |
+| Maps a number to a band with an if-ladder | An ordered list of `{ below, label }` thresholds and one `find`. It is data, not a lookup of functions |
 | Checks ownership or permission in a service | **Scope the read** by owner, or use the authorization wrapper on the endpoint |
 | Guards a side effect whose intent holds either way | Do it **unconditionally**, in the right order (record the user's choice, then act) |
 | Checks status flags in many places | **One state value plus one transition function** that owns the legal moves |

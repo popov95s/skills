@@ -109,6 +109,10 @@ lean-code adapts rules from these, rewritten to fit together:
   skill: compound components, a provider as the only place that knows the state source,
   lifting state instead of syncing it, children over render props, React 19 APIs
   (`typescript/react.md`).
+- [agent-skills](https://github.com/addyosmani/agent-skills) by Addy Osmani
+  (code-review-and-quality, code-simplification, performance-optimization): generic terms
+  only in shared code, one mechanism for value-only differences, reading each fact once,
+  naming, loops to `map`/`filter`, threshold lists, bounded lists, no silent fallbacks.
 - [Refactoring.Guru smell catalogue](https://refactoring.guru/refactoring/smells): the
   smell table in `smells.md`.
 - [React: You Might Not Need an Effect](https://react.dev/learn/you-might-not-need-an-effect):
