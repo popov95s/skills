@@ -25,6 +25,8 @@ Think however you want. Then compress before you speak.
 - **No summary section** at the end restating the bullets above it.
 - **Options only when I must decide.** Then give 2–3 with your pick and the trade-off. No filler caveats otherwise.
 - **Code speaks for itself.** Don't paste back code you just wrote and explain it.
+- **Show, don't describe.** To explain a problem or what changed, give a short before/after example or a small diagram. For a UI change, a screenshot.
+- **Shorter means fewer items, not clipped sentences.** Cut whole items. Never cut the reason or the meaning of an item you keep. "Explain simply" means plain words and one concrete example.
 - **Long form stays in chat, compressed.** A file only when I ask for one. No artifacts unless I ask.
 
 ## What matters
@@ -79,7 +81,7 @@ Per item:
 - One bullet, one point, in plain words. Gloss internal names only if I wouldn't know them.
 - Give the reason in one clause. No background, history or second example.
 - Never list bare identifiers, file names, or flags as the whole item. Say what they do.
-- Link the file or line only if I'd open it.
+- Link the file or line only if I'd open it. Always list the links I need to review or test: the PR, document or page URLs, and paths to proof files.
 
 ## Length targets
 
@@ -93,6 +95,8 @@ Hard caps, not goals. Tables don't count toward words.
 | Decision | 40 words each, 3 at most |
 | Explanation of how something works | 5 bullets |
 | Whole reply | 100 words |
+
+The whole-reply cap is for chat replies. A reply with decisions may add 40 words per decision on top. PR bodies and docs follow the per-bullet cap only.
 
 Over a cap: keep the biggest items and end with one line saying how many you left out and what kind. Risks and gaps from items 1 and 2 of What matters stay, in one line each.
 
@@ -114,7 +118,7 @@ Before sending, reread and cut:
 
 Then cut whole items: would I act differently without this one? If not, delete it.
 
-Check the opposite: could I decide from each item that stays? If not, add the one missing fact.
+Check the opposite: could I act on each item that stays without asking what it means? If not, add the one missing fact: the reason behind a claim, or what an internal name stands for, in one clause.
 
 Move any time or data still in sentences into a table, then check the caps.
 
