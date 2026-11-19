@@ -27,6 +27,35 @@ The rules are in [SKILL.md](../SKILL.md). This file shows how to write them in P
 - Reuse the project's id types (`NewType`) and schemas. Don't start a parallel set.
 - Narrow untrusted input explicitly. An annotation doesn't validate network or file data.
 
+## Typed data, not strings
+
+We wrote the value, so read its field. Don't take a string apart with a regex.
+
+```python
+# before: the label is parsed again to learn what we put into it
+is_return = re.match(r"^parcel:[^:]+:[^:]+:return$", label) is not None
+carrier_id = label.split(":")[1]
+
+# after: the record has the fields; the string exists only where it is stored
+is_return = ref.direction == "return"
+carrier_id = ref.carrier_id
+```
+
+A key with parts is a nested dict or a tuple of typed values, not a joined string:
+
+```python
+# before
+stock[f"{warehouse_id}:{sku}"] = level
+
+# after
+stock: dict[tuple[WarehouseId, Sku], StockLevel] = {}
+stock[(warehouse_id, sku)] = level
+```
+
+The standard library parses what it knows: `Path(file_name).suffix`, `urlparse(link)`. When
+a stored string must stay a string, one codec module builds and reads it, accepts the old
+shape, writes the new one, and has a round-trip test.
+
 ## Errors
 
 - One exception class per failure mode, under a domain base class.

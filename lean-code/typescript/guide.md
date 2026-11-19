@@ -49,6 +49,36 @@ notes for plain JavaScript at the end.
   `expectTypeOf`, or an `Equal<A, B>` check that fails to compile. These are types, not
   assertions, and the no-assert rules don't apply to them.
 
+## Typed data, not strings
+
+We wrote the value, so read its field. Don't take a string apart with a regex.
+
+```ts
+// before: the label is parsed again to learn what we put into it
+const isReturn = /^parcel:[^:]+:[^:]+:return$/.test(label);
+const carrierId = label.split(":")[1];
+
+// after: the record has the fields; the string exists only where it is stored
+const isReturn = ref.direction === "return";
+const carrierId = ref.carrierId;
+```
+
+A key with parts is a nested map, not a joined string:
+
+```ts
+// before
+stock.set(`${warehouseId}:${sku}`, level);
+const level = stock.get(`${warehouseId}:${sku}`);
+
+// after
+const stockByWarehouse = new Map<WarehouseId, Map<Sku, StockLevel>>();
+const level = stockByWarehouse.get(warehouseId)?.get(sku);
+```
+
+The platform parses what it knows: `extname(fileName)` over `/\.([a-z0-9]+)$/i`, `new URL(link)`
+over a host regex. When a stored string must stay a string, one codec file builds and reads
+it, accepts the old shape, writes the new one, and has a round-trip test.
+
 ## Errors and modules
 
 - One error class or code per failure mode, following the project's convention.
