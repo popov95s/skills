@@ -1,6 +1,6 @@
 ---
 name: lean-code
-description: How I want code written in TypeScript, JavaScript, Python and Swift. SOLID, small focused files, almost no comments, one-line docstrings, no boolean blindness, strategies chosen by one picker function instead of lookup tables, simple ternaries only, barrel-only index files. Must always apply when writing or editing code, no trigger needed.
+description: How I want code written in TypeScript, JavaScript, Python, Swift and Rust. SOLID, small focused files, almost no comments, one-line docstrings, no boolean blindness, strategies chosen by one picker function instead of lookup tables, simple ternaries only, barrel-only index files. Must always apply when writing or editing code, no trigger needed.
 ---
 
 # Lean code
@@ -13,6 +13,7 @@ show how to write them:
 | TypeScript and JavaScript | [typescript/guide.md](typescript/guide.md) | [typescript/patterns.md](typescript/patterns.md) |
 | Python | [python/guide.md](python/guide.md) | [python/patterns.md](python/patterns.md) |
 | Swift and SwiftUI | [swift/guide.md](swift/guide.md) | [swift/patterns.md](swift/patterns.md) |
+| Rust | [rust/guide.md](rust/guide.md) | [rust/patterns.md](rust/patterns.md) |
 
 For reviewing a diff or acting on an analyzer finding, read [smells.md](smells.md). For a bug
 fix, read [bug-fixes.md](bug-fixes.md) first. Repo rules in AGENTS.md win where they
