@@ -24,7 +24,7 @@ before changing anything. In existing code, flag it and suggest the fix (see Sco
 | Lazy module or hollow wrapper | A new module only renames an existing call | Inline it | It owns a real rule or interaction, however small |
 | Data class | Callers rebuild the same rule from a passive record | Put the rule with its owner | Plain immutable records with no rule to share |
 | Dead code | A variant or export has no caller left | Delete it | Something reaches it by registration, generated code, a framework entry point or an outside consumer |
-| Speculative generality | A plugin system exists for imagined uses | Delete it | A strategy for two or more real kinds, or an interface that lets tests inject fakes |
+| Speculative generality | A plugin system exists for imagined uses | Delete it | A strategy for two or more real kinds, a shared piece whose next use is expected, or an interface that lets tests inject fakes |
 | Feature envy | Several callers read order internals to work out its refund rule | Move the rule to the owning domain | A pure function reads explicit data it was given |
 | Inappropriate intimacy | One module patches another's private cache | Expose a domain operation | Never; adding getters for the same internals is no fix |
 | Message chains | A caller walks several owners to work out a shipping charge | Ask the owning domain for the answer | Plain data access or a builder |

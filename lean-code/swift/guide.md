@@ -108,13 +108,3 @@ package tests, and run the changed screen on a simulator: tap the controls you c
 compare with the build before your change when the work is a refactor. A refactor that keeps
 output identical is checked by the same screens and the same stored files, not by reading
 the diff.
-
-## Diff search
-
-```
-git diff -U0 "$(git merge-base main HEAD)" -- '*.swift' \
-  | grep -E '^\+\+\+ |^\+.*(\bas!|try!|[A-Za-z)\]]!(\.|\)|,|$)| as [A-Z]|: Bool[,)=]|\? [^:]*\? |@unchecked|// MARK|print\()'
-```
-
-A hit is a question, not a verdict. It cannot see a nested ternary spread over lines, a `switch`
-whose cases call services, or a dictionary of closures: reread the diff for those.

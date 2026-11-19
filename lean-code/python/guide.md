@@ -137,15 +137,3 @@ Replace an impure or nested one with a named function with early returns.
 ```
 
 No `Args:`, `Returns:` or `Raises:` sections.
-
-## Diff search
-
-```
-{ git diff -U0 "$(git merge-base <base> HEAD)" -- '*.py'
-  git ls-files -o --exclude-standard -- '*.py' | xargs -I{} git diff -U0 --no-index /dev/null {}; } \
-  | grep -E '^\+\+\+ |^\+.*(\bmatch |kind (==|!=) "|type (==|!=) "|isinstance\(|endswith\("\.|startswith\("[a-z-]+:"|: bool\b|\bcast\(|: Any\b|[(,] *_[a-z]+[,:)]|type: ignore|noqa|pyright: ignore|lambda[^:]*: None|"[a-z_]+" in [a-z])|^\+ *(async )?def .*=\s*(\[\]|\{\}|set\(\))\s*[,)]'
-```
-
-It covers committed, uncommitted and new untracked files. The `+++` lines name the file each
-hit below them belongs to. Hits in comments are questions too. It can't see nested
-ternaries, dicts keyed by kind or defaults in multi-line signatures: reread the diff for those.

@@ -13,3 +13,7 @@
 | 2026-11-18 | Import from a folder's index, except flat folders of stores or clients | One import line shows the module; an index over many stores bloats bundles |
 | 2026-11-18 | No project-specific tool commands; each project names its own checks | The skill is shared across projects and languages |
 | 2026-11-19 | Bug fixes live in `bug-fixes.md`, read only for a bug fix | It is a process, not a code rule, and most edits don't need it |
+| 2026-11-19 | No diff-search commands in the guides | Pattern checks belong to separate tools; the skill states rules |
+| 2026-11-19 | Concrete readability limits: two conditions per expression, two levels of nesting, assign once | "No dense expressions" was too vague and was the most repeated review ask |
+| 2026-11-19 | No reads in a loop | N+1 reads were a repeated review ask with no rule |
+| 2026-11-19 | Expected reuse is not speculative; generic code lives in the shared module; domain values live on their owner | Shared-component and placement asks repeated because "no speculative generality" pulled the other way |

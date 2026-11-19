@@ -184,18 +184,3 @@ Without a type checker, the rules stay and the checks move to runtime and tests:
 - An exhaustive `switch` ends in a `default` that throws, because nothing else catches a
   missing case.
 - The picker's `default` throws, and one test calls the picker with every kind.
-
-## Diff search
-
-```
-{ git diff -U0 "$(git merge-base <base> HEAD)" -- '*.ts' '*.tsx' '*.js' '*.jsx'
-  git ls-files -o --exclude-standard -- '*.ts' '*.tsx' '*.js' '*.jsx' | xargs -I{} git diff -U0 --no-index /dev/null {}; } \
-  | sed -E 's/ as const([^A-Za-z_]|$)/ \1/g' \
-  | grep -E '^\+\+\+ |^\+.*(switch \(|kind (===|!==) "|type (===|!==) "|endsWith\("\.|startsWith\("[a-z-]+:"|\.slice\("[a-z-]+:"\.length|: boolean([;,)} ]|$)|= (true|false)[,)]|[(,] *_[a-zA-Z]+[,:)]|\(\) => \{\}|createContext|" in [a-z]|\bas [A-Za-z]|[a-zA-Z)\]]!(\.|;|\)|,)|: any\b|@ts-|-disable)' \
-  | grep -vE '^\+ *import '
-```
-
-It covers committed, uncommitted and new untracked files. The `+++` lines name the file each
-hit below them belongs to. It also flags `export { a as b }` lines, which index files may
-have. It can't see nested or `await` ternaries, records keyed by kind or multi-line
-signatures: reread the diff for those.

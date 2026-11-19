@@ -35,6 +35,9 @@ conflict.
 - **Policy apart from effects.** Calculations take values and return values; they do not
   fetch, write or schedule. The function that runs the use case owns the order of reads,
   decisions and writes, and keeps writes that must be atomic in one transaction.
+- **No reads in a loop.** One query or request per item of a list is an N+1. Read in bulk
+  (by ids, by one index range, one batch call) before the loop, then look items up in memory.
+  The same holds for a list in the UI that fetches once per row.
 - **One owner per fact.** Each piece of state and each transition has one owner. Children
   get a value and an action, never a synchronized copy.
 - **Separate models for different meanings.** A shipping address and an invoice address
@@ -71,6 +74,9 @@ conflict.
   wrapper (Variants, rule 3).
 - **Split by domain, not by kind.** `billing/invoicing/` beats a global `helpers/`. A
   `utils`/`helpers` file is fine at 3–4 functions, next to the domain it serves.
+- **Generic code lives in the shared module.** A helper or component with nothing
+  feature-specific in it goes where every feature can find it, not inside the first feature
+  that needed it. Provider-specific details stay in that provider's module.
 - **Under 400 lines.** When a file grows past that, split it. Don't reorganize it into
   sections with comment headers.
 - **Index and package files only re-export.** No types, constants, functions, side effects
@@ -92,11 +98,18 @@ conflict.
 - **Simple ternaries only.** A ternary picks between two values. Both sides are values or
   pure calls: no side effects, no `await`, no nesting, no markup. Anything else becomes a
   named function with early returns.
-- **No dense expressions.** Readable steps beat one line. Use `map`/`filter` over a reduce
-  that builds an object; give a sub-expression a name when the line needs re-reading.
+- **Readable in one pass.** A reader follows a function top to bottom without going back.
+  Readable steps beat one line. Use `map`/`filter` over a reduce that builds an object.
+- **At most two conditions in one expression.** A third `&&`/`||` gets a named predicate
+  (`isOverdue(invoice)`) or a derived union. Never mix `&&` and `||` without naming the parts.
+- **At most two levels of nesting.** Deeper code becomes guard clauses or a named function.
+- **Values are assigned once.** No variable reassigned across branches or loop steps to build
+  a result. Compute it in a named function that returns it, or with `map`/`filter`.
 - **No `else` after `return` or `throw`.**
 - **Keep config at the call site.** Don't move a one-use value (a guard, a limit) into a
-  constant far from where it is used.
+  constant far from where it is used. A value that describes a domain thing (whether a
+  pipeline sends alerts, a provider's default limit) lives on that thing's definition, not
+  as a loose constant next to one caller.
 - **Never add lint or type suppressions, or casts.** Restructure the code. If it's a real
   false positive, ask first.
 - **No error handling for cases that can't happen.** If the types or an earlier guard rule
@@ -234,7 +247,13 @@ pure data mapping.
   shape. A small change in the wrong place is a second bug.
 - **Reuse before writing.** Before writing code, check in order: something already in the
   codebase, the standard library, a platform feature, an installed dependency. No new
-  dependency for what a few lines do. No near-duplicates.
+  dependency for what a few lines do. No near-duplicates. Reuse covers data too: a table,
+  field or result the code already reads beats a new query or a parallel table.
+- **Build it shared when reuse is real or expected.** When a second caller exists, or one is
+  expected (a sibling page, the next market, a planned feature), build the shared component
+  or mechanism. Look in the shared module first, and extend an existing component with a
+  variant before writing a new one. Speculative generality is flexibility for uses nobody
+  expects.
 - **Correct over clever.** Two standard options of the same size: take the one that is
   correct on edge cases.
 - **Flag existing smells, don't refactor them unasked.** When the task touches code that
@@ -306,5 +325,6 @@ Reread your diff and delete:
 - any file that became a grab-bag (split it) or shrank to a fragment (merge it back)
 - any logic that crept into an index or package file
 - every variant smell from "Variants", and every branch that matches no row in "Branching"
-
-Then run the diff search in the language guide. A hit is a question, not a verdict.
+- every expression with more than two conditions, nesting deeper than two levels, and
+  variable reassigned to build a result
+- every query or request inside a loop
