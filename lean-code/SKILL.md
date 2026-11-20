@@ -168,9 +168,20 @@ shapes) drifts into the same seven smells.
    it; a tagged union; or one codec per id family that builds the value and reads it back as
    a typed result (stored text unchanged, with a round-trip property test, decoding old
    stored shapes and writing the new one). A key with parts is a nested map or a record, not
-   a joined string. Use the platform's parser (`URL`, path, date) over a regex. A regex is
-   for text we don't control (user input, third-party free text), inside one named function.
-   Detection by name happens in that codec only.
+   a joined string. Detection by name happens in that codec only.
+
+   **No logic on text matching.** Never decide behaviour by matching text: no regex, no
+   `includes`, `startsWith` or `===` on free text, no trimmed or case-folded compare, no edit
+   distance or fuzzy match. This holds for our values and for anyone else's: user input, a
+   provider's free text, a model's prose. Text matching breaks silently when wording,
+   spelling, language or format shifts, and no test catches the next variant. Decide from a
+   typed field: our own field, a code the source publishes (NUTS, CPV, ISO country, an enum
+   in its schema), or a structured field the provider documents. If the source states a fact
+   only in free text, we don't have that fact: say so and ask, or have a model extract it
+   into a typed field at the boundary, backed by an eval. Don't approximate it with string
+   logic. Parsing a documented format with the platform's parser (`URL`, `Date`, JSON, a
+   schema library) is not text matching, and neither is a codec reading back an id we wrote
+   in our own format.
 6. **One copy, one path.** Spot: a helper re-exported from a second module, a second copy of
    a small utility, the same constant in several files, a second sort order or search that
    must agree with the first, a table translating between two equivalent code sets, blocks
