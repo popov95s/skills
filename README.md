@@ -9,18 +9,18 @@ Two skills for Claude Code, Codex, Cursor, and other agents that support [Agent 
 
 ## Install
 
-Use the [skills CLI](https://github.com/vercel-labs/skills) with Node.js 22.20 or newer. For this private repository, use a Git credential helper, authenticated GitHub CLI, or SSH access.
+Use the [skills CLI](https://github.com/vercel-labs/skills) with Node.js 22.20 or newer. If GitHub requires authentication, use a Git credential helper, authenticated GitHub CLI, or SSH access.
 
 Install both skills for one project by running this from the project root. Pick your agent when prompted.
 
 ```bash
-npx skills add popov95s/skills --skill lean-code --skill terse
+npx skills add popov95s/agent-skills --skill lean-code --skill terse
 ```
 
 | To do this | Run |
 | --- | --- |
-| List available skills | `npx skills add popov95s/skills --list` |
-| Install across projects for Codex | `npx skills add popov95s/skills --skill lean-code --skill terse -g -a codex` |
+| List available skills | `npx skills add popov95s/agent-skills --list` |
+| Install across projects for Codex | `npx skills add popov95s/agent-skills --skill lean-code --skill terse -g -a codex` |
 | Verify a project install | `npx skills list` |
 | Check for updates | `npx skills check` |
 | Update a project skill | `npx skills update lean-code -p` |
