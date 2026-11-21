@@ -2,7 +2,7 @@
 
 I keep these in my agent's instructions across projects.
 
-**[lean-code](lean-code/SKILL.md).** I remove wrappers that only pass arguments through. A wrapper earns its place if it keeps the same rule out of several callers. When a bug fix turns up unrelated cleanup, leave me a note in the review. The skill has guides for TypeScript, JavaScript, Python, Swift, and Rust. [TypeScript example](lean-code/typescript/strategy-example.md)
+**[lean-code](lean-code/SKILL.md).** My guidelines for writing and reviewing code. They cover how to split code into functions and files, handle branches and errors, and decide what belongs in a bug fix. There are guides for TypeScript, JavaScript, Python, Swift, and Rust. [TypeScript example](lean-code/typescript/strategy-example.md)
 
 **[terse](terse/SKILL.md).** A routine reply gets 100 words. Put the result first and say what you couldn't verify. If there's a decision for me, put it last and tell me what you'd pick. I'll ask for the long version if I need it.
 
