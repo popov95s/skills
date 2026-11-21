@@ -2,7 +2,9 @@
 
 I keep these in my agent's instructions across projects.
 
-**[lean-code](lean-code/SKILL.md).** My guidelines for writing and reviewing code. They cover how to split code into functions and files, handle branches and errors, and decide what belongs in a bug fix. There are guides for TypeScript, JavaScript, Python, Swift, and Rust. [TypeScript example](lean-code/typescript/strategy-example.md)
+**[lean-code](lean-code/SKILL.md).** The rules I give agents for writing and reviewing code. Read the whole flow before editing. Keep each decision in one place and test it through the interface callers use. In review, show which callers a problem affects and explain why it matters.
+
+The language guides cover TypeScript, JavaScript, Python, Swift, and Rust. Use the [review checklist](lean-code/smells.md) when reading a diff and the [bug-fix guide](lean-code/bug-fixes.md) when tracing a failure back to its cause.
 
 **[terse](terse/SKILL.md).** A routine reply gets 100 words. Put the result first and say what you couldn't verify. If there's a decision for me, put it last and tell me what you'd pick. I'll ask for the long version if I need it.
 
