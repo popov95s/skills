@@ -109,10 +109,10 @@ def load_document(document_id: DocumentId) -> Document:
             assert_never(result)
 ```
 
-Not fine: cases that call services. Write the strategy and its picker instead: see
-[patterns.md](patterns.md#strategy). For two kinds at once (requester kind × kind of read),
-the shape is the same as [typescript/strategy-example.md](../typescript/strategy-example.md):
-one picker per kind, and the second kind becomes methods on the strategy.
+When a choice determines which service to call or which rules to apply,
+give each case its own strategy. Choose the strategy once at the entry
+point so the rest of the code can use a common interface. See the
+[Python strategy pattern](patterns.md#strategy).
 
 Fine: a picker. Its cases only build a strategy, or only hand the narrowed value to a
 strategy's method:
