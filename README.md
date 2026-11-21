@@ -1,11 +1,24 @@
 # Personal agent skills
 
-Two skills for Claude Code, Codex, Cursor, and other agents that support [Agent Skills](https://agentskills.io/). Use them to carry your coding and writing preferences across projects.
+If you keep asking your coding agent to leave unrelated code alone or put the blocker at the top of its reply, these two skills give it those instructions up front. Use either one on its own in Claude Code, Codex, Cursor, or another agent that supports [Agent Skills](https://agentskills.io/).
 
-| Skill | When to use it | Try asking |
-| --- | --- | --- |
-| [lean-code](lean-code/SKILL.md) | Write or review TypeScript, JavaScript, Python, Swift, or Rust. | "Use lean-code to review this diff for repeated decisions and unnecessary wrappers." |
-| [terse](terse/SKILL.md) | Give a status update, explain a decision, or summarize findings. | "Use terse to summarize the blockers and tell me what needs my attention." |
+## Pick a skill
+
+### lean-code
+
+Use [lean-code](lean-code/SKILL.md) when an agent is about to edit or review code you'll maintain. It spells out what "keep it simple" means here. Reuse an existing helper when it fits, keep a decision in one place, and flag unrelated cleanup in the review. The language guides cover TypeScript, JavaScript, Python, Swift, and Rust.
+
+In the [print shop example](lean-code/typescript/strategy-example.md), quotes and print jobs both need to know whether the customer ordered postcards or a banner. When one switch picks the product, a new product needs one new case alongside its pricing and printing code.
+
+> Use lean-code to review this diff. Flag repeated decisions and wrappers that only pass arguments through.
+
+### terse
+
+Use [terse](terse/SKILL.md) when you need to decide what to do after reading an update. It puts the result first, keeps unverified work visible, and uses a table when you need to compare numbers. You can ask for a walkthrough when the short answer leaves you with questions.
+
+> Use terse to summarize this test run. Tell me what failed, what you couldn't verify, and what needs my input.
+
+A reply could be as short as "Checkout passes with one item. Before release, check a two-item order to confirm shipping uses the combined weight."
 
 ## Install
 
@@ -16,6 +29,8 @@ Install both skills for one project by running this from the project root. Pick 
 ```bash
 npx skills add popov95s/skills --skill lean-code --skill terse
 ```
+
+To try one skill, keep only its `--skill` option. Start a fresh session and use one of the prompts above.
 
 | To do this | Run |
 | --- | --- |
@@ -32,7 +47,7 @@ Set `DISABLE_TELEMETRY=1` to turn off the CLI's usage reporting and security-aud
 
 ## Use on every task
 
-The prompts above select a skill for one task. To make these skills your defaults, install them user-wide and add the following to `~/.claude/CLAUDE.md` for Claude Code or `~/.codex/AGENTS.md` for Codex. Start a fresh session to try it.
+To make the skills your defaults, install them user-wide and add the following to `~/.claude/CLAUDE.md` for Claude Code or `~/.codex/AGENTS.md` for Codex.
 
 ```markdown
 Use lean-code whenever you write or edit code. Read its SKILL.md before the first code edit
@@ -41,6 +56,8 @@ instructions where they conflict.
 
 Use terse for every reply. Read its SKILL.md before the first reply in a session.
 ```
+
+The skill gives the agent rules to follow. Use your project's tests and review process to check the result.
 
 ## Skill files
 
