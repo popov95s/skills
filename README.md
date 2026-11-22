@@ -23,15 +23,13 @@ change has a clear place to go.
 
 ## Install
 
-Run this in the project where you want the skills. Pick the skills and agents you want.
+Run this from your project root.
 
 ```sh
 npx skills add popov95s/skills
 ```
 
-The [skills CLI](https://github.com/vercel-labs/skills) needs Node.js 22.20 or newer. Add `-g` to install for all projects, or `--skill lean-code` to install just that skill. Set `DISABLE_TELEMETRY=1` to turn off the CLI's usage reporting and security-audit requests.
-
-Use `npx skills list` to check what's installed. Run `npx skills update` to update installed skills.
+See the [skills CLI docs](https://github.com/vercel-labs/skills) for requirements and options.
 
 ## Ideas I adapted
 
