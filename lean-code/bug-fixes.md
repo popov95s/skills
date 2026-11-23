@@ -3,7 +3,8 @@
 Read this before fixing a bug. The code rules in [SKILL.md](SKILL.md) still apply to the fix.
 
 1. **Reproduce it with a failing test.** Write the test that shows the bug, run it, and see
-   it fail for the reported reason. Name the break it catches in the test name.
+   it fail for the reported reason. Name the break it catches in the test name. The test
+   follows [testing.md](testing.md).
 2. **Find the root cause, not the symptom.** A report names one path that broke. Find
    where the wrong value or decision is made.
 3. **Find every caller.** Search for every caller of the function you are about to change,

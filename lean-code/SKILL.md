@@ -16,7 +16,8 @@ show how to write them:
 | Rust | [rust/guide.md](rust/guide.md) | [rust/patterns.md](rust/patterns.md) |
 
 For reviewing a diff or acting on an analyzer finding, read [smells.md](smells.md). For a bug
-fix, read [bug-fixes.md](bug-fixes.md) first. Repo rules in AGENTS.md win where they
+fix, read [bug-fixes.md](bug-fixes.md) first. For any test you write, change or delete, read
+[testing.md](testing.md). Repo rules in AGENTS.md win where they
 conflict.
 
 ## Design
@@ -54,13 +55,14 @@ conflict.
 - **No special cases for one caller.** Standardize so every caller reads the same thing.
 - **Testable through the public interface.** Accept dependencies instead of creating them;
   return results instead of mutating inputs. Tests call what callers call, check results
-  the caller can see, and survive internal refactors. When small modules merge into one,
-  delete the old tests on their internals and test the merged module.
+  the caller can see, and survive internal refactors.
 - **Test each dependency by its kind.** Pure code is tested through its public function,
   without fakes. A database or file system uses a local stand-in. Your own remote service
   gets an in-memory fake behind its interface. A third-party API gets an injected mock.
   Strategy factories get fake functions; the store behind those functions is tested
   against the local stand-in.
+- **Every test catches a named break, and no two tests overlap.** Writing, changing or
+  deleting a test: read [testing.md](testing.md) first.
 - **Never simplify away** validation at trust boundaries, error handling that prevents data
   loss, security checks or accessibility basics.
 - **Tests live in test files.** No `demo()` functions or assert-based self-checks in
@@ -358,3 +360,4 @@ Reread your diff and delete:
 - every expression with more than two conditions, nesting deeper than two levels, and
   variable reassigned to build a result
 - every query or request inside a loop
+- every test that names no break, repeats another test's case, or asserts on a mock

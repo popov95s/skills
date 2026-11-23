@@ -195,6 +195,10 @@ Editing a component or hook: read [react.md](react.md).
 
 No `@param` or `@returns`.
 
+## Tests
+
+- Table cases use `it.each` with literal expected values. See [../testing.md](../testing.md).
+
 ## Plain JavaScript
 
 Without a type checker, the rules stay and the checks move to runtime and tests:

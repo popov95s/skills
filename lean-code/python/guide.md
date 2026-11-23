@@ -76,6 +76,7 @@ shape, writes the new one, and has a round-trip test.
 ## Python specifics
 
 - Tests live in test files: no `if __name__ == "__main__":` self-checks in library modules.
+- Table cases use `pytest.mark.parametrize` with literal expected values. See [../testing.md](../testing.md).
 - No boolean parameters that pick behaviour, keyword-only ones included (`*, strict: bool`).
 - No mutable default arguments.
 - No work at import time beyond definitions: no network, files or global state changes.

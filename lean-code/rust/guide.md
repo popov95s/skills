@@ -77,6 +77,7 @@ later. Which structure fits which problem: [patterns.md](patterns.md).
   `#[cfg(test)] #[path = "audit_tests.rs"] mod tests;`. No inline `mod tests { ... }` blocks.
 - Integration tests that run the binary or the public API go in `tests/`.
 - Use `tempfile` for files on disk, never a fixed path.
+- Table cases are an array of `(input, expected)` literals in one loop. See [../testing.md](../testing.md).
 - Test-only helpers live in a `#[cfg(test)]` module, not in source with `#[allow(dead_code)]`.
 
 ## Suppressions
