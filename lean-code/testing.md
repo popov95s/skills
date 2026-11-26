@@ -16,6 +16,17 @@ every test can fail for a reason that matters and no two tests fail for the same
    - A test that can only fail when another test fails is overlap: delete it.
 3. **Check what exists.** Search for a test that already covers this behaviour. Extend it
    instead of adding a near-copy.
+4. **One break, one test.** Ask which existing test would already fail on the same bug. If
+   one would, don't add the new test. Two common cases:
+   - A pinned example that repeats a property test's check with one input. A property
+     `decode(encode(x)) == x` makes "encode then decode `abc` gives `abc`" redundant. Keep
+     pinned examples that check a specific output: "`encode('abc')` is `YWJj`".
+   - The same guard tested again in every feature that uses it. Test the guard's rules
+     once, then one test lists every entry point and checks that each one refuses.
+5. **Unchanged behaviour gets no new test.** When you move, rename or port code, move its
+   existing tests with it and update them, instead of writing new ones next to them. Don't
+   add a test for behaviour your change didn't touch to show it still works ("as before",
+   "still"). The existing tests already prove that.
 
 ## What a test asserts
 
@@ -28,6 +39,12 @@ every test can fail for a reason that matters and no two tests fail for the same
   value, exact message wording, a file's text), it fires on redesign and sleeps through
   bugs. Test the behaviour that depends on the decision: not `MAX_RETRIES === 5`, but
   "a failing call is retried 5 times and a 6th attempt never happens".
+- **Don't restate constant tables.** A test that lists each row of a map, a list of
+  prefixes or a set of types, or checks that a constant list has no duplicates, only fails
+  when someone edits the table on purpose. Test the behaviour that reads the table.
+- **Assert the typed error or value.** A bare `toThrow()`, `expect.any(String)` or "the
+  two outputs differ" passes on the wrong error or the wrong text. Name the error type, or
+  give the expected value.
 - **Your code, not the framework's.** Don't assert that the router calls a registered
   handler or that a library does what its docs say. Constructors, getters, constants and
   forwarding are tested only when they validate, default, derive or cause a side effect.
@@ -51,6 +68,10 @@ every test can fail for a reason that matters and no two tests fail for the same
   integration test.
 - **Test-only code stays out of production classes.** A method only tests call lives in a
   test utility.
+- **One fixture builder per domain.** Build test records and setup through one testkit
+  function per domain, with defaults for every required field. Adding a required field
+  then changes that one file, not every test that builds the record. Don't copy setup
+  blocks between test files.
 
 ## What thorough means
 
