@@ -21,8 +21,10 @@ notes for plain JavaScript at the end.
 - Replace a cast with narrowing: a discriminant check, `in`, or a schema parse. A type guard
   (`(x): x is Foo`) only wraps a real runtime check; a guard that checks nothing is a cast.
   No assertion functions (`asserts x is Foo`).
-- Derive a type from its source instead of retyping its fields: `typeof`, `ReturnType`,
-  `Pick`, `Omit`, or the schema's inferred type.
+- Derive a type from its source instead of retyping its fields: `typeof`, `Pick`, `Omit`,
+  or the schema's inferred type.
+- A function we own returns a named type: declare the type, then annotate the function with
+  it. Use `ReturnType` only for a library's function whose result type isn't exported.
 - Arrays and records a function takes and doesn't change are `readonly`
   (`readonly Item[]`, `Readonly<Record<Kind, Label>>`).
 - No `@ts-ignore`, `@ts-expect-error` or `*-disable` lint comments.

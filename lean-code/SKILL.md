@@ -17,8 +17,8 @@ show how to write them:
 
 For reviewing a diff or acting on an analyzer finding, read [smells.md](smells.md). For a bug
 fix, read [bug-fixes.md](bug-fixes.md) first. For any test you write, change or delete, read
-[testing.md](testing.md). Repo rules in AGENTS.md win where they
-conflict.
+[testing.md](testing.md). For a Dockerfile, CI workflow, build script or repo-wide config,
+read [infra.md](infra.md). Repo rules in AGENTS.md win where they conflict.
 
 ## Design
 
@@ -44,6 +44,13 @@ conflict.
   reads or returns has a bound: paginate or cap it.
 - **One owner per fact.** Each piece of state and each transition has one owner. Children
   get a value and an action, never a synchronized copy.
+- **Identify by id, not by a mix of fields.** Refer to a record by its unique id. Don't
+  store, pass or match on a combination of its fields to stand for it (name plus email,
+  title plus date): fields change, collide, and go stale in every copy. Hold the id and
+  read the fields from the owner when you need them. A record with no id gets one where it
+  is created. Data from another system is matched by that system's stable id. Exception: a
+  snapshot that must keep the values from one moment (the address on a sent invoice) stores
+  them on purpose, in a field named as a snapshot.
 - **Separate models for different meanings.** A shipping address and an invoice address
   stay separate types even when their fields match today.
 - **One owner per decision.** Two copies of the same decision get one owner. Code that only
@@ -385,6 +392,13 @@ Reread your diff and delete:
 - any file that became a grab-bag (split it) or shrank to a fragment (merge it back)
 - any logic that crept into an index or package file
 - every variant smell from "Variants", and every branch that matches no row in "Branching"
+- every hollow wrapper: a file, component or hook that only forwards or renames a call
+- every id or key built by joining strings or adding a prefix
+- every function a reader can't follow top to bottom in one pass
+- every file in a folder whose domain it doesn't belong to
+- every special case for one caller or one kind, where a shared rule would cover it
+- every record identified by a mix of its fields instead of its id
+- every new table, field, permission or query that skipped the reuse check in "Scope"
 - every expression with more than two conditions, nesting deeper than two levels, and
   variable reassigned to build a result
 - every query or request inside a loop
