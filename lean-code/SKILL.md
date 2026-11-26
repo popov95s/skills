@@ -286,6 +286,34 @@ pure data mapping.
   or mechanism. Look in the shared module first, and extend an existing component with a
   variant before writing a new one. Speculative generality is flexibility for uses nobody
   expects.
+- **New storage, permission or query: look first, then weigh.** Before adding a table,
+  field, schema key, permission, endpoint or query, search for one that already holds or
+  controls the same data. Then weigh:
+  - **Same kind of thing? Compare by role, not by name.** Describe the new one in one
+    sentence of generic words, with no feature, provider or page names. Do the same for each
+    existing one nearby. If the sentences match, it is the same thing under another name:
+    reuse it, or generalize it with a `kind`. Example: `receiptPdfId`, `quotePdfId` and a
+    new `invoicePdfId` on an order all read "a document generated for this order". That is
+    one `documents` link with a `kind`, not one field per document. Spot: two or more
+    fields of the same type pointing the same way, or names that differ only by feature.
+  - **Same owner?** Same writer, same lifetime and deletion cascade, same access rule. If
+    all match, it belongs in the existing one.
+  - **Who reads it?** Would existing readers break, or do they already ignore the new rows
+    or field? Check at runtime, not by the type alone.
+  - **Cost now vs. cost forever.** Widening changes the existing readers once. A parallel
+    copy means two places that must agree on cleanup, migrations and access from then on.
+  - **One place to look.** The next person looking for this data finds it where they'd
+    expect.
+  - **Fit.** If widening turns the existing one into a grab-bag of fields only one caller
+    uses, use a `kind` field, or a new table is right.
+  - **Real blocker or friction?** A required field becoming optional, or a contract-check
+    warning, is a migration to do, not a reason for a parallel table.
+  - **Queries.** An existing query that returns this with a filter or a parameter beats a
+    new one.
+
+  Widening an existing table or query to serve the change is part of the change, not an
+  unasked refactor. State the choice in one line: what you checked, what you picked, and
+  why.
 - **Correct over clever.** Two standard options of the same size: take the one that is
   correct on edge cases.
 - **Flag existing smells, don't refactor them unasked.** When the task touches code that
