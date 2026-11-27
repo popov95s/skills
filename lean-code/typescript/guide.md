@@ -147,22 +147,23 @@ const notifierFor = (destination: Destination): Notifier => {
 };
 ```
 
-## Ternaries
+## Early returns and one pass
+
+Pick a return value with guard clauses, not a ternary:
 
 ```ts
-const noun = count === 1 ? "item" : "items";            // fine: values
-const text = items.length ? formatList(items) : "—";    // fine: pure call
-const user = id ? await loadUser(id) : null;            // not fine: await
-const tone = isError ? "red" : isWarning ? "amber" : "grey"; // not fine: nested
+const trackingNumberOf = (shipment: Shipment) => {
+  if (shipment.status !== "shipped") return null;
+  return shipment.trackingNumber;
+};
 ```
 
-Replace an impure or nested ternary with a named function with early returns:
+Filter a list once with one named predicate:
 
 ```ts
-const loadOptionalUser = async (id: UserId | undefined) => {
-  if (!id) return null;
-  return loadUser(id);
-};
+const isRefundable = (order: Order) => order.status === "delivered" && !order.refundedAt;
+
+return orders.filter(isRefundable).map((order) => order.id);
 ```
 
 ## React

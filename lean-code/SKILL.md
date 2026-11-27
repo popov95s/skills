@@ -1,6 +1,6 @@
 ---
 name: lean-code
-description: How I want code written in TypeScript, JavaScript, Python, Swift and Rust. SOLID, small focused files, almost no comments, one-line docstrings, no boolean blindness, strategies chosen by one picker function instead of lookup tables, simple ternaries only, barrel-only index files. Must always apply when writing or editing code, no trigger needed.
+description: How I want code written in TypeScript, JavaScript, Python, Swift and Rust. SOLID, small focused files, almost no comments, one-line docstrings, no boolean blindness, strategies chosen by one picker function instead of lookup tables, early returns over ternaries, one pass per list, barrel-only index files. Must always apply when writing or editing code, no trigger needed.
 ---
 
 # Lean code
@@ -84,9 +84,16 @@ read [infra.md](infra.md). Repo rules in AGENTS.md win where they conflict.
   change.** Small focused files beat one big file. I navigate by filename.
 - **Not too small.** A small file that only one neighbour uses, and that changes only when
   that neighbour changes, goes back into it. A small file stays separate when it has its own
-  callers or its own reason to change, because it will be extended. Type files, index files
-  and one strategy per kind always stay separate. A file that only forwards is a hollow
-  wrapper (Variants, rule 3).
+  callers or its own reason to change, because it will be extended. Index files and one
+  strategy per kind always stay separate. A file that only forwards is a hollow wrapper
+  (Variants, rule 3).
+- **Where a type goes.**
+
+  | Type                                | Goes in                   |
+  | ----------------------------------- | ------------------------- |
+  | Few fields, one file uses it        | That file                 |
+  | Few fields, several files use it    | The domain's `types` file |
+  | More than 5 fields, or a core model | Its own file              |
 - **Split by domain, not by kind.** `billing/invoicing/` beats a global `helpers/`. A
   `utils`/`helpers` file is fine at 3–4 functions, next to the domain it serves.
 - **Generic code lives in the shared module.** A helper or component with nothing
@@ -112,9 +119,11 @@ read [infra.md](infra.md). Repo rules in AGENTS.md win where they conflict.
 - **No boolean blindness.** No boolean parameter that picks behaviour. Use a named union or
   separate named functions. A boolean that states a fact about data (`disabled`, `loading`,
   `selected`, `archived`) is data, not a mode, and is fine.
-- **Simple ternaries only.** A ternary picks between two values. Both sides are values or
-  pure calls: no side effects, no `await`, no nesting, no markup. Anything else becomes a
-  named function with early returns.
+- **Early returns over ternaries.** A function that picks what to return (a result variant,
+  a value or `null`, a fallback) does it with guard clauses that each return. Don't write a
+  ternary in its place, even for two plain values.
+- **One pass per list.** Several conditions on one list become one named predicate in a
+  single `filter`, not a chain of `filter` calls. Conditions in a chain count as one expression.
 - **Readable in one pass.** A reader follows a function top to bottom without going back.
   Readable steps beat one line. Use `map`/`filter` over a reduce that builds an object. A loop that only pushes or sets
   becomes `map`/`filter`.
@@ -223,7 +232,7 @@ All rules for `if`, `switch`, `match` and ternaries are here. Decide by what the
 | Runs a long sequence of steps | A **pipeline** of named functions called in order |
 | Switches markup by mode | **Separate variant components**, or early returns at the top of the component |
 | Does one of two actions on a yes/no fact about one thing (archived or not), in one place | A plain `if`/`else` is fine. When a second place decides the same fact, derive a union and use a strategy. If the two branches call different services or hold different rules, it is a kind, even when stored as a boolean: use the strategy row |
-| Picks between two values with pure expressions | One simple ternary (see Readability) |
+| Picks between two values or results | A named function with **early returns** (see Readability) |
 
 The line between a fine `switch` and a strategy: a `switch` whose cases only return data or
 throw is fine. So is a picker: a `switch` whose cases only build a strategy, or only hand the
@@ -348,6 +357,16 @@ pure data mapping.
 - **Commit only what you touched for this task.** Stage by path. Never stage settings,
   MCP config, skills, docs or dependency files you didn't change.
 
+## Prompts and agents
+
+- **Fix the reasoning, not the case.** When you change a prompt or an agent's instructions
+  to fix a failure, state the general rule the model missed. Never quote the failing
+  example, its values or its documents in the prompt unless I ask for it. A prompt that
+  lists the exact cases to avoid passes those cases and fails the next one, because the
+  model matches examples instead of reasoning.
+- **Check on cases the prompt doesn't name.** Run the fix on inputs other than the one that
+  failed, such as the eval set, before calling it done.
+
 ## Comments: minimum
 
 - **Default to zero.** Name the thing well instead. A good name beats any comment.
@@ -387,7 +406,7 @@ Reread your diff and delete:
 
 - every comment that restates the code
 - every docstring longer than one line, and every clause explaining a decision
-- every boolean parameter, nested or impure ternary, suppression and cast you added
+- every boolean parameter, ternary, suppression and cast you added
 - every line that isn't part of the task: moves or renames made only to tidy, unrelated files
 - any file that became a grab-bag (split it) or shrank to a fragment (merge it back)
 - any logic that crept into an index or package file
@@ -402,4 +421,5 @@ Reread your diff and delete:
 - every expression with more than two conditions, nesting deeper than two levels, and
   variable reassigned to build a result
 - every query or request inside a loop
+- every list filtered or mapped more than once where one pass with a named predicate would do
 - every test that names no break, repeats another test's case, or asserts on a mock

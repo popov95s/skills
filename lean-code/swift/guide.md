@@ -81,8 +81,9 @@ SwiftUI. Which structure fits which problem: [patterns.md](patterns.md).
 
 - A Swift module is the index. No barrel files and no `Index.swift`. A package's public
   surface is the `public` declarations; keep everything else internal.
-- One type per file, named after it. `Pitch.swift` holds `Pitch`; `Pitch+Edit.swift` holds
-  its extension.
+- A type with its own file is named after it. `Pitch.swift` holds `Pitch`;
+  `Pitch+Edit.swift` holds its extension. Which types get a file: see "Where a type goes" in
+  SKILL.md.
 - Folders are domains (`Motion/`, `Storage/`), not kinds (`Helpers/`, `Extensions/`).
 - Under 400 lines, in practice well under 200.
 - A target that lists source files by path in the project file (a watch app sharing
