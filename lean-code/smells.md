@@ -9,7 +9,7 @@ before changing anything. In existing code, flag it and suggest the fix (see Sco
 
 | Smell | Example | Fix | Not a problem when |
 | --- | --- | --- | --- |
-| Long function | One function parses input, prices, writes and builds the response | Extract the named steps; keep the order readable in one orchestrator | It is long but does one thing at one level |
+| Long function | Past one screen (about 40 lines), or one function parses input, prices, writes and builds the response | Extract the named steps; keep the order readable in one orchestrator | It is long but does one thing at one level |
 | Large module | One short file owns search, permissions, billing and display | Split by responsibility, even below the line limit | The parts always change together |
 | Primitive obsession | Account ids, currencies and modes are all plain strings | A domain type, a literal union or a codec | The value has no rules of its own |
 | Long parameter list | Sending a message takes identity values, mode flags and options | Fix the operation's shape; group values that form one concept | An options object would only hide the same mess |

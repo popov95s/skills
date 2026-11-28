@@ -130,6 +130,12 @@ read [infra.md](infra.md). Repo rules in AGENTS.md win where they conflict.
 - **At most two conditions in one expression.** A third `&&`/`||` gets a named predicate
   (`isOverdue(invoice)`) or a derived union. Never mix `&&` and `||` without naming the parts.
 - **At most two levels of nesting.** Deeper code becomes guard clauses or a named function.
+- **A function fits on one screen.** A reader sees the whole body without scrolling: about
+  40 lines, not counting the signature, blank lines and closing brackets. Past that, check
+  whether it does more than one thing. Split it by responsibility: pull out each named step
+  and keep the order in one short function that calls them. Don't cut lines to meet the
+  number. A long `switch` that only maps kinds to data, or a component's markup, may run
+  longer if it stays at one level.
 - **Values are assigned once.** No variable reassigned across branches or loop steps to build
   a result. Compute it in a named function that returns it, or with `map`/`filter`.
 - **No `else` after `return` or `throw`.**
@@ -414,6 +420,8 @@ Reread your diff and delete:
 - every hollow wrapper: a file, component or hook that only forwards or renames a call
 - every id or key built by joining strings or adding a prefix
 - every function a reader can't follow top to bottom in one pass
+- every function past one screen (about 40 lines): check whether it does more than one
+  thing, and split it only if it does
 - every file in a folder whose domain it doesn't belong to
 - every special case for one caller or one kind, where a shared rule would cover it
 - every record identified by a mix of its fields instead of its id
